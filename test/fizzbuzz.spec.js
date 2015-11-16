@@ -5,15 +5,11 @@ const BUZZ = "BUZZ";
 const BANG = "BANG";
 const BINGO = "BINGO";
 
-function repeat(number) {
-    return number.toString()
-}
+const bang = createModuleRule(7, BANG);
+const fizz = createModuleRule(3, FIZZ);
+const buzz = createModuleRule(5, BUZZ);
 
-const bang = create_module_rule(7, BANG);
-const fizz = create_module_rule(3, FIZZ);
-const buzz = create_module_rule(5, BUZZ);
-
-function create_module_rule(rule_module, word) {
+function createModuleRule(rule_module, word) {
     return function (num) {
         if (num % rule_module ==0) {
             return word
@@ -22,13 +18,17 @@ function create_module_rule(rule_module, word) {
     };
 };
 
-var say = (function makeSayFn(concat_rules) {
-    return function(num){
+var say = (function createSayFunction(concat_rules) {
+    return (num)=> {
         var result = concat_rules.reduce((initial, rule) => initial + rule(num),'');
         if (result) return result
         return repeat(num);
     };
 })([fizz, buzz, bang]);
+
+function repeat(number) {
+    return number.toString()
+}
 
 describe('FizzBuzz', () => {
 
@@ -67,10 +67,5 @@ describe('FizzBuzz', () => {
     it('should say FIZZBUZZBANG when number is multiple of 7, 3 and 5', () => {
         assert.equal(say(3*5*7), FIZZ + BUZZ + BANG);
     });
-
-    it('should say BINGO when number is exactly 40', () => {
-        assert.equal(say(40), BINGO);
-    });
-
 });
 
